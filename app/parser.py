@@ -19,3 +19,15 @@ def parse_currency_html(currency_html: str) -> dict:
             pass
     print(data_)
     return data_
+
+
+def get_currency_mapper(currency_html: str):
+    currency_list = BeautifulSoup(
+        currency_html,
+        "html.parser"
+    ).find(
+        "select",
+        id="UniDbQuery_VAL_NM_RQ"
+    ).find_all("option")
+    return currency_list
+
