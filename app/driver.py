@@ -10,6 +10,7 @@ class WBDriver:
     def __init__(self, currency_code: str) -> None:
         load_dotenv(find_dotenv())
         self.url = os.getenv("CBR_URL")
+        self.web_driver_remote_url = os.getenv("WB_DRIVER_REMOTE_URL")
         self.wb_options = webdriver.ChromeOptions()
         self.wb_options.page_load_strategy = "normal"
         self.wb_options.add_argument("--headless")
@@ -30,11 +31,13 @@ class WBDriver:
         return html
 
 
-class LocalWBDriver(WBDriver):
+class RemoteWBDriver(WBDriver):
+    def __init__(self, currency_code: str):
+        super().__init__(currency_code)
 
     def get_driver(self):
         driver = webdriver.Remote(
-            command_executor=self.url,
+            command_executor=self.web_driver_remote_url,
             options=self.wb_options
         )
         return driver
