@@ -2,6 +2,9 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
+from app.schema import Currency
+from app.db import currencies_db_init
+
 
 def parse_currency_html(currency_html: str) -> dict:
     data_ = dict()
@@ -22,6 +25,8 @@ def parse_currency_html(currency_html: str) -> dict:
 
 
 def get_currency_mapper(currency_html: str):
+    currencies = list()
+
     currency_list = BeautifulSoup(
         currency_html,
         "html.parser"
@@ -29,5 +34,16 @@ def get_currency_mapper(currency_html: str):
         "select",
         id="UniDbQuery_VAL_NM_RQ"
     ).find_all("option")
-    return currency_list
+    # print(currency_list)
+    res = [{tag['value']: tag.text.strip()} for tag in currency_list]
+    # print(res)
 
+    for elem in res:
+        code = list(elem.keys())[0]
+        name = list(elem.values())[0]
+        currency = Currency(name=name, code=code)
+        currencies.append(currency)
+
+    currencies_db_init(currencies)
+
+    return res
