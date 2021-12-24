@@ -3,7 +3,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 from app.schema import Currency
-from app.db import currencies_db_init
+from app.db import currencies_db_init, _check_db
 
 
 def parse_currency_html(currency_html: str) -> dict:
@@ -16,34 +16,32 @@ def parse_currency_html(currency_html: str) -> dict:
         cols = [elem.text.strip() for elem in cols]
         try:
             date_ = datetime.strptime(cols[0], "%d.%m.%Y")
-            print(type(cols[-1]))
             data_[date_] = float(cols[-1].replace(",", "."))
         except (IndexError, ValueError):
             pass
-    print(data_)
+    print(data_)  # debug print
     return data_
 
 
-def get_currency_mapper(currency_html: str):
-    currencies = list()
+def populate_db_with_currencies(currency_html: str) -> None:
+    is_db_exist = _check_db()
 
-    currency_list = BeautifulSoup(
-        currency_html,
-        "html.parser"
-    ).find(
-        "select",
-        id="UniDbQuery_VAL_NM_RQ"
-    ).find_all("option")
-    # print(currency_list)
-    res = [{tag['value']: tag.text.strip()} for tag in currency_list]
-    # print(res)
+    if not is_db_exist:
+        currencies = list()
 
-    for elem in res:
-        code = list(elem.keys())[0]
-        name = list(elem.values())[0]
-        currency = Currency(name=name, code=code)
-        currencies.append(currency)
+        currency_list = BeautifulSoup(
+            currency_html,
+            "html.parser"
+        ).find(
+            "select",
+            id="UniDbQuery_VAL_NM_RQ"
+        ).find_all("option")
+        res = [{tag['value']: tag.text.strip()} for tag in currency_list]
 
-    currencies_db_init(currencies)
+        for elem in res:
+            code = list(elem.keys())[0]
+            name = list(elem.values())[0]
+            currency = Currency(name=name, code=code)
+            currencies.append(currency)
 
-    return res
+        currencies_db_init(currencies)
