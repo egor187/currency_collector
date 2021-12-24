@@ -33,7 +33,7 @@ services:
     container_name: currency_collector
     networks:
       - backend
-    command: python3 run.py
+    command: bash
     depends_on:
       - db
       - web_driver

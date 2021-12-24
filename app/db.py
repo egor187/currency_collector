@@ -3,12 +3,13 @@ import os
 from sqlalchemy import create_engine, select, inspect
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv, find_dotenv
-from app.schema import Base, Currency
-from app.exc import DataNotFound
+from schema import Base, Currency
+from exc import DataNotFound
 
 load_dotenv(find_dotenv())
 
-engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URL"))
+engine = create_engine(os.getenv("DOCKER_SQLALCHEMY_DATABASE_URL"))
+# engine = create_engine(os.getenv("LOCAL_SQLALCHEMY_DATABASE_URL"))
 session = Session(engine)
 Base.metadata.create_all(engine)
 

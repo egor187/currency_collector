@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from app.driver import RemoteWBDriver, WBDriver
-from app.parser import populate_db_with_currencies, parse_currency_html
-from app.db import get_currency_code_by_name
-from app.exc import DataNotFound
+from driver import RemoteWBDriver, WBDriver
+from parser import populate_db_with_currencies, parse_currency_html
+from db import get_currency_code_by_name
+from exc import DataNotFound
 
 
 def main():
@@ -19,8 +19,8 @@ def main():
             print("No such currency founded")
         else:
             flag = False
-            currency_html = WBDriver(currency_code=currency_code).get_currency_html()
-            # currency_html = RemoteWBDriver(currency_code=currency_code).get_currency_html()
+            # currency_html = WBDriver(currency_code=currency_code).get_currency_html()
+            currency_html = RemoteWBDriver(currency_code=currency_code).get_currency_html()
             currency_data = parse_currency_html(currency_html=currency_html)
             populate_db_with_currencies(currency_html=currency_html)
 

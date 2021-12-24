@@ -2,8 +2,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-from app.schema import Currency
-from app.db import currencies_db_init, _check_db
+from schema import Currency
+from db import currencies_db_init, _check_db
 
 
 def parse_currency_html(currency_html: str) -> dict:
