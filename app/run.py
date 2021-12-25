@@ -8,7 +8,7 @@ from db import get_currency_code_by_name, add_currency_data
 from exc import DataNotFound
 
 
-FIRST_SEARCH_YEAR = "1991"
+FIRST_SEARCH_YEAR = "1992"
 
 
 def main():
