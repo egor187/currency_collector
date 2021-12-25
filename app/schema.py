@@ -22,7 +22,7 @@ class CurrencyData(Base):
     __tablename__ = "currency_data"
 
     id = Column(Integer, primary_key=True)
-    currency_id = Column(Integer, ForeignKey("currency.id"))
+    currency_id = Column(Integer, ForeignKey("currency.id", ondelete="CASCADE"))
     date = Column(Date)
     value = Column(Float)
 
