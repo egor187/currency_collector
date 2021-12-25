@@ -8,6 +8,9 @@ from db import get_currency_code_by_name, add_currency_data
 from exc import DataNotFound
 
 
+FIRST_SEARCH_YEAR = "1991"
+
+
 def main():
     flag = True
 
@@ -20,8 +23,12 @@ def main():
             print("No such currency founded")
         else:
             flag = False
-            # currency_html = WBDriver(currency_code=currency_code).get_currency_html()
-            currency_html = RemoteWBDriver(currency_code=currency_code).get_currency_html()
+            # currency_html = WBDriver(
+            # currency_code=currency_code, first_year_search=FIRST_SEARCH_YEAR
+            # ).get_currency_html()
+            currency_html = RemoteWBDriver(
+                currency_code=currency_code, first_year_search=FIRST_SEARCH_YEAR
+            ).get_currency_html()
             currency_data = parse_currency_html(currency_html=currency_html)
             populate_db_with_currencies(currency_html=currency_html)
             print(currency_data)  # debug print

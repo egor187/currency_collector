@@ -7,7 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 
 
 class WBDriver:
-    def __init__(self, currency_code: str) -> None:
+    def __init__(self, currency_code: str, first_year_search: str) -> None:
         load_dotenv(find_dotenv())
         self.url = os.getenv("CBR_URL")
         self.web_driver_remote_url = os.getenv("WB_DRIVER_REMOTE_URL")
@@ -16,6 +16,7 @@ class WBDriver:
         self.wb_options.add_argument("--headless")
         self.wb_options.add_argument("--disable-gpu")
         self.currency_code = currency_code
+        self.first_year_search = first_year_search
 
     def get_driver(self) -> webdriver:
         return webdriver.Chrome(options=self.wb_options)
@@ -24,8 +25,13 @@ class WBDriver:
         driver = self.get_driver()
         driver.get(self.url)
         currency_selector = driver.find_element(By.ID, "UniDbQuery_VAL_NM_RQ")
-        select_obj = Select(currency_selector)
-        select_obj.select_by_value(self.currency_code)
+        cur_select_obj = Select(currency_selector)
+        cur_select_obj.select_by_value(self.currency_code)
+
+        year_selector = driver.find_element(By.CLASS_NAME, "ui-datepicker-year")
+        year_select_obj = Select(year_selector)
+        year_select_obj.select_by_value(self.first_year_search)
+
         driver.find_element(By.ID, "UniDbQuery_searchbutton").click()
         html = driver.page_source
         driver.quit()
@@ -33,8 +39,8 @@ class WBDriver:
 
 
 class RemoteWBDriver(WBDriver):
-    def __init__(self, currency_code: str):
-        super().__init__(currency_code)
+    def __init__(self, currency_code: str, first_year_search: str):
+        super().__init__(currency_code, first_year_search)
 
     def get_driver(self):
         driver = webdriver.Remote(
