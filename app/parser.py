@@ -19,7 +19,6 @@ def parse_currency_html(currency_html: str) -> dict:
             data_[date_] = float(cols[-1].replace(",", "."))
         except (IndexError, ValueError):
             pass
-    print(data_)  # debug print
     return data_
 
 
