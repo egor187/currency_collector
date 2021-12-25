@@ -28,6 +28,7 @@ class WBDriver:
         select_obj.select_by_value(self.currency_code)
         driver.find_element(By.ID, "UniDbQuery_searchbutton").click()
         html = driver.page_source
+        driver.quit()
         return html
 
 
