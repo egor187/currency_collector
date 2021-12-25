@@ -1,3 +1,5 @@
-Запуск приложения -> docker-compose run --rm app python run.py <CURRENCY>
+1. Clone repo
 
-https://cbr.ru/currency_base/dynamics/
+2. Запуск приложения ->  a) ./docker-compose build
+                         b) ./docker-compose run --rm app python run.py <CURRENCYNAME>
+
