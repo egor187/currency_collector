@@ -1,0 +1,40 @@
+version: "3"
+
+networks:
+  backend:
+
+
+services:
+
+  web_driver:
+    image: selenium/standalone-chrome:latest
+    networks:
+      - backend
+    ports:
+      - "5900:5900"
+      - "4444:4444"
+    privileged: true
+    shm_size: 2g
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    networks:
+      - backend
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 1234
+
+  app:
+    image: flowerdidsmell/currency_collector:first
+    container_name: currency_collector
+    networks:
+      - backend
+#    command: python3 run.py
+    depends_on:
+      - db
+      - web_driver
+    stdin_open: true
+    tty: true
