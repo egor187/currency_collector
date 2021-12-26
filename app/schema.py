@@ -1,7 +1,17 @@
+import os
+
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Column, Integer, String, ForeignKey, Date, Float
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from dotenv import load_dotenv, find_dotenv
 
 
+load_dotenv(find_dotenv())
+
+engine = create_engine(os.getenv("DOCKER_SQLALCHEMY_DATABASE_URL"))
+# engine = create_engine(os.getenv("LOCAL_SQLALCHEMY_DATABASE_URL"))
+session = Session(engine)
 Base = declarative_base()
 
 
@@ -29,3 +39,4 @@ class CurrencyData(Base):
     currency = relationship("Currency", back_populates="currency_data")
 
 
+Base.metadata.create_all(engine)
