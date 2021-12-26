@@ -11,8 +11,6 @@ Data-scraper для сбора информации о курсе валют с 
 
 Инструкция по использованию:
 
-1.Clone repo
+1. Clone docker-compose-prod.yml
 
-2.Запуск приложения ->  a) ./docker-compose build
-                         b) ./docker-compose run --rm app python run.py <CURRENCYNAME>
-
+2. Запуск приложения (cli) ->  "docker-compose -f .\docker_compose_prod.yml run --rm app python run.py <CURRENCYNAME>"
