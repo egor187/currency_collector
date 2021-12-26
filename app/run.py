@@ -16,6 +16,7 @@ def main():
     while flag:
         currency_name = sys.argv[1]
         # currency_name = input("Provide a currency name: ")
+        populate_db_with_currencies()
         try:
             currency_code = get_currency_code_by_name(currency_name=currency_name)
         except DataNotFound:

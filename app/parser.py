@@ -1,5 +1,7 @@
+import os
 from datetime import datetime
 
+import requests
 from bs4 import BeautifulSoup
 
 from schema import Currency
@@ -22,7 +24,10 @@ def parse_currency_html(currency_html: str) -> dict:
     return data_
 
 
-def populate_db_with_currencies(currency_html: str) -> None:
+def populate_db_with_currencies(currency_html: str = None) -> None:
+    if not currency_html:
+        currency_html = requests.get(os.getenv("CBR_URL")).text
+
     is_db_exist = _check_db()
 
     if not is_db_exist:
