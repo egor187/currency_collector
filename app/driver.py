@@ -23,14 +23,29 @@ class WBDriver:
 
     def get_currency_html(self) -> str:
         driver = self.get_driver()
+        driver.delete_all_cookies()
         driver.get(self.url)
+        driver.set_page_load_timeout(10)
+
         currency_selector = driver.find_element(By.ID, "UniDbQuery_VAL_NM_RQ")
         cur_select_obj = Select(currency_selector)
         cur_select_obj.select_by_value(self.currency_code)
 
-        year_selector = driver.find_element(By.CLASS_NAME, "ui-datepicker-year")
+        driver.find_element(By.CLASS_NAME, "datepicker-filter_button").click()
+        driver.implicitly_wait(5)
+        year_selector = driver.find_element(
+            By.XPATH, '/html/body/main/div/div/div/form/div/div[1]/div[4]/div/label/div[1]/div/div[3]/div[1]/div/div/div/select[2]'
+        )
+        driver.implicitly_wait(5)
         year_select_obj = Select(year_selector)
-        year_select_obj.select_by_value(self.first_year_search)
+        year_select_obj.select_by_index(0)
+
+        driver.find_element(
+            By.XPATH, "/html/body/main/div/div/div/form/div/div[1]/div[4]/div/label/div[1]/div/div[3]/div[1]/div/table/tbody/tr[1]/td[7]/a"
+        ).click()
+        driver.implicitly_wait(5)
+        driver.find_element(By.CLASS_NAME, "datepicker-filter_apply-btn").click()
+        driver.implicitly_wait(5)
 
         driver.find_element(By.ID, "UniDbQuery_searchbutton").click()
         html = driver.page_source
