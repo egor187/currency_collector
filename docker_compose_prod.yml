@@ -36,5 +36,9 @@ services:
     depends_on:
       - db
       - web_driver
+    environment:
+      CBR_URL: "https://cbr.ru/currency_base/dynamics/"
+      WB_DRIVER_REMOTE_URL: "http://web_driver:4444"
+      DOCKER_SQLALCHEMY_DATABASE_URL: "postgresql+psycopg2://postgres:1234@db/postgres"
     stdin_open: true
     tty: true
