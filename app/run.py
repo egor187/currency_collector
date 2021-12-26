@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-import os
 import sys
 
-from driver import RemoteWBDriver, WBDriver
+from driver import RemoteWBDriver
 from parser import populate_db_with_currencies, parse_currency_html
 from db import get_currency_code_by_name, add_currency_data
 from exc import DataNotFound
@@ -31,7 +30,6 @@ def main():
             ).get_currency_html()
             currency_data = parse_currency_html(currency_html=currency_html)
             populate_db_with_currencies(currency_html=currency_html)
-            print(currency_data)  # debug print
             add_currency_data(currency_code, currency_data)
 
 
