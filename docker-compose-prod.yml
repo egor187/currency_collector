@@ -28,7 +28,7 @@ services:
       POSTGRES_PASSWORD: 1234
 
   app:
-    image: flowerdidsmell/currency_collector:first
+    image: flowerdidsmell/currency_collector:1.0.0
     container_name: currency_collector
     networks:
       - backend
