@@ -57,7 +57,4 @@ def add_currency_data(currency_code: str, data: dict) -> None:
 
 def _check_db():
     """Check is db has 'currency' table"""
-    if not inspect(engine).has_table("currency"):
-        return True
-    else:
-        return False
+    return inspect(engine).has_table("currency")
